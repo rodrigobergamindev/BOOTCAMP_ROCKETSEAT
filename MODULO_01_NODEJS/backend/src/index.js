@@ -26,8 +26,27 @@ app.use(express.json())
 
  */
 
+  /*
+    MIDDLEWARES
+
+    Interceptador de requisições que pode interromper totalmente a requisição ou alterar dados da requisição
+
+ */
+
  const projects = []
 
+ function logRequests(req,res, next) {
+
+     const { method, url} = req;
+     const logLabel = `[${method.toUpperCase()} ${url}]`
+
+     console.log(logLabel)
+     
+     return next()
+ }
+
+
+ app.use(logRequests)
 
 app.get('/projects', (req, res) => {
     
@@ -39,7 +58,7 @@ app.get('/projects', (req, res) => {
     return res.json(results)
 })
 
-app.post('/projects', (req, res) => {
+app.post('/projects', logRequests, (req, res) => {
     const {title, owner} = req.body
     
     const project = { id: uuid(), title, owner }
