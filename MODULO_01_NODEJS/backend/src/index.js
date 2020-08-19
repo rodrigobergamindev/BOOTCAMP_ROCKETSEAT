@@ -2,9 +2,12 @@ const express = require('express')
 const app = express()
 const {uuid, isUuid} = require('uuidv4')
 const { response, json } = require('express')
-
+const cors = require('cors')
 port = 3333
 
+app.use(cors({
+    origin: 'http://localhost:3000'
+}))
 app.use(express.json())
 
 /**
